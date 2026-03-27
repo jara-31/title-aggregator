@@ -24,10 +24,11 @@ RUN composer update --no-dev --optimize-autoloader --no-interaction
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-RUN cp .env.example .env \
+    RUN cp .env.example .env \
     && php artisan key:generate \
-    && mkdir -p /tmp \
-    && touch /tmp/database.sqlite \
+    && mkdir -p database \
+    && touch database/database.sqlite \
+    && php artisan migrate --force \
     && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
